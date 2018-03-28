@@ -1,0 +1,67 @@
+global class ViaCEPWebService {
+    
+    @AuraEnabled
+    webservice static List<String> getAddressForCEP(String cep) {
+		
+        String url = 'https:/'+'/viacep.com.br/ws/'+cep+'/json/';
+        
+		Http h = new Http();
+        HttpRequest req = new HttpRequest();
+		req.setEndpoint(url);
+		req.setMethod('GET');
+		HttpResponse res = h.send(req);
+        
+        JSONParser parser = JSON.createParser(res.getBody());
+        
+        String cepFormatado, logradouro, numero, bairro, cidade, UF;
+
+		while (parser.nextToken() != null) {
+            if ((parser.getCurrentToken() == JSONToken.FIELD_NAME) && (parser.getText() == 'cep')) {
+	                parser.nextToken();
+                	cepFormatado = parser.getText();
+	        } else if ((parser.getCurrentToken() == JSONToken.FIELD_NAME) && (parser.getText() == 'logradouro')) {
+	                parser.nextToken();
+                	logradouro = parser.getText();
+	        } else if ((parser.getCurrentToken() == JSONToken.FIELD_NAME) && (parser.getText() == 'complemento')) {
+	                parser.nextToken();
+                	numero = parser.getText();
+	        } else if ((parser.getCurrentToken() == JSONToken.FIELD_NAME) && (parser.getText() == 'bairro')) {
+	                parser.nextToken();
+                	bairro = parser.getText();
+	        } else if ((parser.getCurrentToken() == JSONToken.FIELD_NAME) && (parser.getText() == 'localidade')) {
+	                parser.nextToken();
+                	cidade = parser.getText();
+	        } else if ((parser.getCurrentToken() == JSONToken.FIELD_NAME) && (parser.getText() == 'UF')) {
+	                parser.nextToken();
+                	UF = parser.getText();
+	        }
+        }
+        
+        List<String> results = new List<String>();
+        results.add(cepFormatado);
+        results.add(logradouro);
+        results.add(numero);
+        results.add(bairro);
+        results.add(cidade);
+        results.add(UF);
+                       
+        return results;
+	}
+    
+    @AuraEnabled
+    webservice static String upsertAccountAddress(String[] newAddress, String accountId){       
+        
+        Account account = AccountDAO.get(accountId); 
+       	
+        account.CEP__c 						= newAddress[0];
+        account.Logradouro__c 				= newAddress[1];
+        account.Complemento__c 				= newAddress[2];
+        account.Bairro__c 					= newAddress[3];
+        account.Cidade_do_Restaurante__c 	= newAddress[4];
+        account.UF_Estado__c 				= newAddress[5];
+        
+        upsert account;
+        
+        return 'Success';
+    }
+}
