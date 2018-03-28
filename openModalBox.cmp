@@ -1,0 +1,38 @@
+<!--
+	Este componente exibe um botão que,
+	ao ser clicado, abre um novo componente 
+	encapsulado num modal.
+	-->
+
+<aura:component implements="lightning:actionOverride,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes" access="global" >
+	
+    <!-- Botão que, ao ser clicado, abre o modal -->
+    <lightning:button label="Abrir Modal" class="slds-m-around--xx-medium" onclick="{!c.openModal}"></lightning:button>
+        
+    	<!-- Cria o modal -->
+    	<div role="dialog" tabindex="-1" aria-labelledby="header43" aura:id="modalId" class="slds-modal slds-modal_medium">
+            <div class="slds-modal__container" style="width: 55%;">
+                
+                <!-- Header do Modal -->
+                <div class="slds-modal__header slds-theme--info">
+                	<h2 class="slds-text-heading--small">Header do Modal</h2>
+                </div>
+                
+                <!-- Conteúdo do Modal -->
+                <div class="slds-modal__content slds-p-around--small">
+                    <!-- Exemplo de Chamada de Componente dentro do Modal: <c:iFoodCEP /> -->
+                    <h3 class="slds-text-heading--small">Exemplo de Corpo do Modal: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
+                </div>
+                
+                <!-- Footer do Modal -->
+                <div class="slds-modal__footer">
+                    <div class="slds-x-small-buttons--horizontal">
+                            <button class="slds-button slds-button--neutral" onclick="{!c.closeModal}" >Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- Fim do modal -->
+    
+    	<!-- Criando um backdrop escuro para exibir atrás do modal -->
+        <div class="slds-backdrop " aura:id="backdropId"></div>   
+</aura:component>
