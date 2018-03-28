@@ -1,0 +1,85 @@
+<!--
+ Este componente contém um formulário que, ao digitar um 
+ CEP válido no primeiro campo, preenche automaticamente 
+ os demais campos com dados colhidos do site viacep.com.br 
+ -->
+
+<aura:component controller="ViaCEPWebService" implements="force:hasRecordId,force:hasSObjectName,flexipage:availableForRecordHome">   	
+    
+    <!-- Armazena Dados de Endereço -->
+    <aura:attribute name="newAddress" type="String[]"
+                    default="{ 'sobjectType': 'String[]',
+                             'CEP': '',
+                             'Logradouro': '',
+                             'Complemento': '',
+                             'Bairro': '',
+                             'Cidade': '',
+                             'UF': ''
+                             }"/>
+    
+    <!-- Header do Forms -->
+    <lightning:layout class="slds-page-header slds-page-header--object-home">
+        <lightning:layoutItem >
+            <lightning:icon iconName="standard:scan_card" alternativeText="Digite seu CEP"/>
+        </lightning:layoutItem>
+        <lightning:layoutItem padding="horizontal-small">
+            <div class="page-section page-header">
+                <h1 class="slds-text-heading--label">CEP</h1>
+                <h2 class="slds-text-heading--medium">MeuCEP</h2>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout> 
+    <!-- Fim do Header -->
+    
+    <!-- Corpo do Forms -->
+    <lightning:layout >
+        <lightning:layoutItem padding="around-small">
+            <div aria-labelledby="addressform">
+                <fieldset class="slds-box slds-theme--default slds-container--large">
+                    
+                    <legend id="newCEPform" class="slds-text-heading--medium">
+                        Digite Seu Endereço
+                    </legend>
+                    
+                    <form class="slds-form--stacked">    
+                        <lightning:input aura:id="addressform" label="CEP"
+                                         name="cep"
+                                         value="{!v.newAddress.CEP}"
+                                         placeholder="_____-___"
+                                         required="true"
+                                         onblur="{!c.digitouCEP}"/> 
+                        <lightning:input aura:id="addressform" label="Logradouro"
+                                         name="Logradouro"
+                                         value="{!v.newAddress.Logradouro}"
+                                         required="true"/> 
+                        <lightning:input aura:id="addressform" label="Complemento"
+                                         name="Complemento"
+                                         required="false"
+                                         value="{!v.newAddress.Complemento}"/>
+                        <lightning:input aura:id="addressform" label="Bairro"
+                                         name="Bairro"
+                                         required="true"
+                                         value="{!v.newAddress.Bairro}"/>
+                        <lightning:input aura:id="addressform" label="Cidade"
+                                         name="Cidade"
+                                         required="true"
+                                         value="{!v.newAddress.Cidade}"/>
+                        <lightning:input aura:id="addressform" label="UF"
+                                         name="UF"
+                                         required="true"
+                                         value="{!v.newAddress.UF}"/>
+                        <lightning:button label="Cadastrar Endereço" 
+                                          class="slds-m-top--medium"
+                                          variant="brand"
+                                          onclick="{!c.clickCadastrar}"/>
+                    </form>
+                </fieldset>
+            </div>
+        </lightning:layoutItem>
+    </lightning:layout> <!-- Fim do Corpo -->
+    
+    <!-- Footer do Forms -->
+    
+    <!-- Fim do Footer-->
+    
+</aura:component>
